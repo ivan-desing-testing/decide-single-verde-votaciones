@@ -14,6 +14,54 @@ from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
 from voting.models import Voting, Question, QuestionOption
+from django.test import TestCase
+
+class SimpleTest(TestCase):
+    def test_basic_addition(self):
+        """
+        Tests that 1 + 1 always equals 2.
+        """
+        self.assertEqual(1 + 1, 2)
+
+class  VotingModelTC(BaseTestCase):
+    def setUp(self):
+        q = Question(desc="Descripcion")
+        q.save()
+
+        opt1=QuestionOption(question=q, option="option1")
+        opt1.save()
+
+        opt2=QuestionOption(question=q, option="option2")
+        opt2.save()
+
+        self.v=Voting(name="Votacion", question=q)
+        self.v.save()
+        super().setUp()
+    def tearDown(self):
+        super().tearDown()
+        self.v=None
+    
+    def testExist(self):
+        v = Voting.objects.get(name="Votacion")
+        self.assertEquals(v.question.options.all()[0].option,"option1")
+        self.assertEquals(v.question.options.all()[1].option,"option2")
+        self.assertEquals(len(v.question.options.all()),2)
+
+    def testCreateVotingAPI(self):
+        self.login()
+        data = {
+            'name':'Example',
+            'desc':'Descripcion',
+            'question':'I wanna',
+            'question_opt':['car', 'house', 'party']
+        }
+        
+        response = self.client.post('/voting/',data,format='json')
+        self.assertEqual(response.status_code,201)
+
+        v = Voting.objects.get(name="Example")
+        self.assertEqual(v.desc,'Descripcion')
+
 
 
 class VotingTestCase(BaseTestCase):
@@ -23,6 +71,12 @@ class VotingTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
+    
+    def test_Voting_toString(self):
+        v = self.create_voting()
+        self.assertEquals(str(v),"test voting")
+        self.assertEquals(str(v.question),"test question")
+        self.assertEquals(str(v.question.options.all()[0]),"option 1 (2)")
 
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
         pk = v.pub_key

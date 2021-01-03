@@ -101,3 +101,11 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+decide/manage.py
+
+decide/test-scripts/test-decrypt.py
+
+decide/test-scripts/test-encrypt.py
+
+decide/test-scripts/test-genkey.sh

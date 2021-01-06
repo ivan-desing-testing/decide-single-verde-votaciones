@@ -25,7 +25,12 @@ def tally(ModelAdmin, request, queryset):
     for v in queryset.filter(end_date__lt=timezone.now()):
         token = request.session.get('auth-token', '')
         v.tally_votes(token)
-
+        
+#Añadiendo acción para visualizar como van los votos actualmente sin necesidad de pararlo
+def currentTally(ModelAdmin, request, queryset):
+    for v in queryset.all():
+        token = request.session.get('auth-token', '')
+        v.tally_votes(token)           
 
 class QuestionOptionInline(admin.TabularInline):
     model = QuestionOption
@@ -43,7 +48,7 @@ class VotingAdmin(admin.ModelAdmin):
     list_filter = (StartedFilter,)
     search_fields = ('name', )
 
-    actions = [ start, stop, tally ]
+    actions = [ start, stop, tally, currentTally ]
 
 
 admin.site.register(Voting, VotingAdmin)

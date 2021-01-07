@@ -1,0 +1,9 @@
+Voting with id 3
+Name: que es mejor ?
+Description: para saber quien sabe de la vida
+Start Date: 2021-01-06T12:16:23.918251Z
+End Date: 2021-01-06T17:39:25.919111Z
+Question: Es mejor NESQUICK o COLACAO?
+Options: 
+Option 2: Se de la vida y por eso me gusta más el Colacao. - Votes: 1
+Option 1: Soy un desgraciao y por eso me gusta más el Nesquick. - Votes: 0

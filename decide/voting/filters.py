@@ -11,6 +11,9 @@ class StartedFilter(SimpleListFilter):
             ('S', 'Started'),
             ('R', 'Running'),
             ('F', 'Finished'),
+            ('H', 'High'),
+            ('M', 'Mid'),
+            ('L', 'Low'),
         ]
 
     def queryset(self, request, queryset):
@@ -22,5 +25,12 @@ class StartedFilter(SimpleListFilter):
             return queryset.exclude(start_date__isnull=True).filter(end_date__isnull=True)
         if self.value() == 'F':
             return queryset.exclude(end_date__isnull=True)
+        if self.value() == 'H':
+            return queryset.exclude(preference_isHigh=False)
+        if self.value() == 'M':
+            return queryset.exclude(preference_isHigh=False)
+        if self.value() == 'L':
+            return queryset.exclude(preference_isHigh=False)
+
         else:
             return queryset.all()

@@ -38,6 +38,22 @@ class QuestionOptionInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [QuestionOptionInline]
+    readonly_fields = ('answer', 'option')
+
+    def get_readonly_fields(self, request, obj=None):
+    #    def __init__(self, *args, **kwargs):
+
+            if request.models.QuestionOption.TypeAnswer(name="TypeAnswer"=='OPEN').exists():
+         #       return self.fields['answer'].widget.attrs['readonly'] = True
+                 return  ('answer')
+
+            else:
+                return ('option')
+
+       #     if admin.ModelAdmin.value(name="TypeAnswer"=='CLOSED'):
+        #         return self.fields['option'].widget.attrs['readonly'] = True
+
+#admin.site.register(Question, QuestionAdmin)
 
 
 class VotingAdmin(admin.ModelAdmin):

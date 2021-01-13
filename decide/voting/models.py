@@ -7,18 +7,25 @@ from base import mods
 from base.models import Auth, Key
 from django import forms
 
+TYPESANSWERS= (
+       ('OPEN', 'Open'),
+       ('CLOSED', 'Closed'),
+       
+)
 
 class Question(models.Model):
     desc = models.TextField()
+    TypeAnswer = models.CharField(max_length=1, null=True, choices=TYPESANSWERS)
 
     def __str__(self):
         return self.desc
 
 RESPUESTAS= (
-       ('Yes', 'Sí'),
+       ('Yes', 'Yes'),
        ('No', 'No'),
        
 )
+
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
@@ -27,7 +34,7 @@ class QuestionOption(models.Model):
    # Yes/No = models.get_or_create(url=settings.BASEURL,
    #                                       defaults={'me': True, False 'name': 'test auth'})blank=False, max_length=255)
     #answer = BooleanField(defaults={'Yes': True, 'No'True })
-    answer = models.CharField(max_length=1, choices=RESPUESTAS)
+    answer = models.CharField(max_length=1, null=True, choices=RESPUESTAS)
 
     def save(self):
         if not self.number:
@@ -35,14 +42,19 @@ class QuestionOption(models.Model):
         return super().save()
 
     def __str__(self):
-        return '{} ({})'.format(self.option, self.number)
+        return '{} ({})'.format(self.option, self.number) 
+
+#def __init__(self, *args, **kwargs):
+   # self.fields['answer'].widget.attrs.update({'disabled': true})
+    #self.fields['answer'].widget.attrs['readonly'] = True
+    #self.fields['answer'].widget.attrs['disabled'] = 'disabled'
 
 
 class Voting(models.Model):
     TYPES_PREFERENCES = (
         ('H', 'High'),
         ('M', 'Mid'),
-        ('L', 'Low'),
+        ('L', 'Low'),   
     )
     name = models.CharField(max_length=200)
     preference = models.CharField(max_length=4, blank=False, null=False, choices=TYPES_PREFERENCES)

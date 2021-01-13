@@ -3,8 +3,17 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import Http404
 
+
 from base import mods
 import zipfile
+
+#Nuevos import
+import io
+import matplotlib.pyplot as plt
+
+from django.http import HttpResponse
+from django.shortcuts import render
+from random import sample
 
 def tally_to_file(voting):
 
@@ -55,3 +64,35 @@ class VisualizerView(TemplateView):
        # print('PRUEBA: '+str(r[0]['id']))
 
         return context
+
+    def plot(request):
+    # Creamos los datos para representar en el gráfico
+         x = opt.option
+         y = opt.votes
+
+    # Creamos una figura y le dibujamos el gráfico
+         f = plt.figure()
+
+    # Creamos los ejes
+         axes = f.add_axes([0.15, 0.15, 0.75, 0.75]) # [left, bottom, width, height]
+         axes.plot(x, y)
+         axes.set_xlabel("Eje X")
+         axes.set_ylabel("Eje Y")
+         axes.set_title("Mi gráfico dinámico")
+
+    # Como enviaremos la imagen en bytes la guardaremos en un buffer
+         buf = io.BytesIO()
+         canvas = FigureCanvasAgg(f)
+         canvas.print_png(buf)
+
+    # Creamos la respuesta enviando los bytes en tipo imagen png
+         response = HttpResponse(buf.getvalue(), content_type='image/png')
+
+    # Limpiamos la figura para liberar memoria
+         f.clear()
+
+    # Añadimos la cabecera de longitud de fichero para más estabilidad
+        response['Content-Length'] = str(len(response.content))
+
+    # Devolvemos la response
+    return response

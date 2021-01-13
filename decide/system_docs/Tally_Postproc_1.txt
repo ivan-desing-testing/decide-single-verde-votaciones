@@ -1,0 +1,9 @@
+Voting with id 1
+Name: Pruebaaa
+Description: 
+Start Date: 2021-01-11T20:16:30.118230Z
+End Date: 2021-01-11T20:23:08.122825Z
+Question: ¿Aprobaremos EGC?
+Options: 
+Option 1: Yes - Votes: 1
+Option 2: Ni de fly - Votes: 0

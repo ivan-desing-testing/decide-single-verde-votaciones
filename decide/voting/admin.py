@@ -40,18 +40,29 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [QuestionOptionInline]
     readonly_fields = ('answer', 'option')
 
-    def get_readonly_fields(self, request, obj=None):
+    #def get_readonly_fields(self, request, obj=None):
     #    def __init__(self, *args, **kwargs):
 
-            if request.models.QuestionOption.TypeAnswer(name="TypeAnswer"=='OPEN').exists():
+      #      if request.models.QuestionOption.TypeAnswer(name="TypeAnswer"=='OPEN').exists():
          #       return self.fields['answer'].widget.attrs['readonly'] = True
-                 return  ('answer')
+       #          return  ('answer')
 
-            else:
-                return ('option')
+        #    else:
+         #       return ('option')
 
        #     if admin.ModelAdmin.value(name="TypeAnswer"=='CLOSED'):
         #         return self.fields['option'].widget.attrs['readonly'] = True
+
+    def get_form(self, request, typeAnswer=None, **kwargs):
+        form = super().get_form(request, typeAnswer=None, **kwargs)
+
+        if typeAnswer=='OPEN' :
+
+           form.base_fields["answer"].disabled = True
+        else:
+           form.base_fields["option"].disabled = True
+
+        return form
 
 #admin.site.register(Question, QuestionAdmin)
 

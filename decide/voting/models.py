@@ -15,7 +15,7 @@ TYPESANSWERS= (
 
 class Question(models.Model):
     desc = models.TextField()
-    TypeAnswer = models.CharField(max_length=1, null=True, choices=TYPESANSWERS)
+    typeAnswer = models.CharField(max_length=1, null=True, choices=TYPESANSWERS)
 
     def __str__(self):
         return self.desc

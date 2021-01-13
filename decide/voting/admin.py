@@ -26,7 +26,7 @@ def tally(ModelAdmin, request, queryset):
         token = request.session.get('auth-token', '')
         v.tally_votes(token)
         
-#Añadiendo acción para visualizar como van los votos actualmente sin necesidad de pararlo
+#Aï¿½adiendo acciï¿½n para visualizar como van los votos actualmente sin necesidad de pararlo
 def currentTally(ModelAdmin, request, queryset):
     for v in queryset.all():
         token = request.session.get('auth-token', '')
@@ -41,7 +41,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class VotingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date', 'end_date')
+    list_display = ('name','preference', 'start_date', 'end_date')
     readonly_fields = ('start_date', 'end_date', 'pub_key',
                        'tally', 'postproc')
     date_hierarchy = 'start_date'

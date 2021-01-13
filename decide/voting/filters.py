@@ -26,11 +26,11 @@ class StartedFilter(SimpleListFilter):
         if self.value() == 'F':
             return queryset.exclude(end_date__isnull=True)
         if self.value() == 'H':
-            return queryset.exclude(preference_isHigh=False)
+            return queryset.exclude(preference ='M').exclude(preference ='L') 
         if self.value() == 'M':
-            return queryset.exclude(preference_isHigh=False)
+            return queryset.exclude(preference ='H').exclude(preference ='L') 
         if self.value() == 'L':
-            return queryset.exclude(preference_isHigh=False)
+            return queryset.exclude(preference ='H').exclude(preference ='M') 
 
         else:
             return queryset.all()

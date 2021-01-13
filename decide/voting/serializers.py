@@ -9,6 +9,10 @@ class QuestionOptionSerializer(serializers.HyperlinkedModelSerializer):
         model = QuestionOption
         fields = ('number', 'option')
 
+#class YesNoQuestions(serializers.HyperlinkedModelSerializer):
+ #   class Meta:
+  #      model = QuestionOption
+   #     fields = ('Yes', 'No')
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     options = QuestionOptionSerializer(many=True)

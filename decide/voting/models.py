@@ -5,6 +5,7 @@ from django.dispatch import receiver
 
 from base import mods
 from base.models import Auth, Key
+from django import forms
 
 
 class Question(models.Model):
@@ -13,11 +14,20 @@ class Question(models.Model):
     def __str__(self):
         return self.desc
 
+RESPUESTAS= (
+       ('Yes', 'Sí'),
+       ('No', 'No'),
+       
+)
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
     number = models.PositiveIntegerField(blank=True, null=True)
     option = models.TextField()
+   # Yes/No = models.get_or_create(url=settings.BASEURL,
+   #                                       defaults={'me': True, False 'name': 'test auth'})blank=False, max_length=255)
+    #answer = BooleanField(defaults={'Yes': True, 'No'True })
+    answer = models.CharField(max_length=1, choices=RESPUESTAS)
 
     def save(self):
         if not self.number:

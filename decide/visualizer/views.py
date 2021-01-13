@@ -23,8 +23,8 @@ def tally_to_file(voting):
     document = 'Voting with id ' + str(id) + '\n'+'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
         start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'
     
-    for postproc in postproc_list:
-        document = document + 'Option '+str(postproc['number'])+': '+str(postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
+    #for postproc in postproc_list:
+       # document = document + 'Option '+str(postproc['number'])+': '+str(postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
 
     print(document)
 

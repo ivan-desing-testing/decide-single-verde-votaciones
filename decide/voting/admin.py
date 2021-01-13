@@ -6,6 +6,7 @@ from .models import Question
 from .models import Voting
 
 from .filters import StartedFilter
+from .filters import PreferenceFilter
 
 
 def start(modeladmin, request, queryset):
@@ -45,7 +46,7 @@ class VotingAdmin(admin.ModelAdmin):
     readonly_fields = ('start_date', 'end_date', 'pub_key',
                        'tally', 'postproc')
     date_hierarchy = 'start_date'
-    list_filter = (StartedFilter,)
+    list_filter = (StartedFilter,PreferenceFilter)
     search_fields = ('name', )
 
     actions = [ start, stop, tally, currentTally ]

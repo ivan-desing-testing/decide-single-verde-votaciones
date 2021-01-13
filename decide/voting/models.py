@@ -9,6 +9,7 @@ from base.models import Auth, Key
 
 class Question(models.Model):
     desc = models.TextField()
+   
 
     def __str__(self):
         return self.desc

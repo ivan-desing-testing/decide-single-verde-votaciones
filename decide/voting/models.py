@@ -1,10 +1,17 @@
+from wsgiref.util import FileWrapper
+import io
+from zipfile import *
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.http import HttpResponse
 
 from base import mods
 from base.models import Auth, Key
+import zipfile
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 
 class Question(models.Model):
@@ -136,6 +143,45 @@ class Voting(models.Model):
 
         self.postproc = postp
         self.save()
+
+    def tally_to_file(self, token=''):
+
+        id = self.id
+        name = self.name
+        desc = self.desc
+        start_date = self.start_date
+        end_date = self.end_date
+        question = self.question
+
+        postproc_list = self.postproc
+
+        doc_name = './system_docs/Tally_Voting_'+ str(id) +'.txt'
+        zip_name = './system_docs/Tally_Voting_'+ str(id) +'.zip'
+
+        document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
+            start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'
+
+        for postproc in postproc_list:
+            document = document + 'Option '+str(postproc['number'])+': '+str(
+                postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
+
+        print("LOG: Save Tally in File")
+
+        f = open(doc_name, 'w')
+        try:
+            f.write(document)
+        finally:
+            f.close()
+
+        doc_zip = zipfile.ZipFile(zip_name, 'w')
+        doc_zip.write(doc_name, compress_type=zipfile.ZIP_DEFLATED)
+
+        doc_zip.close()
+
+        buffer = io.BytesIO()
+
+        HttpResponse(io.open(zip_name, mode="rb").read(), content_type='application/zip')
+
 
     def __str__(self):
         return self.name

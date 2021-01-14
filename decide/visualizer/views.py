@@ -10,6 +10,8 @@ import zipfile
 #Nuevos import
 import io
 import matplotlib.pyplot as plt
+#from gpcharts import figure
+
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -71,6 +73,8 @@ class VisualizerView(TemplateView):
          y = opt.votes
 
     # Creamos una figura y le dibujamos el gráfico
+         #f = figure('Grafica',xlabel='value')
+
          f = plt.figure()
 
     # Creamos los ejes
@@ -92,7 +96,7 @@ class VisualizerView(TemplateView):
          f.clear()
 
     # Añadimos la cabecera de longitud de fichero para más estabilidad
-        response['Content-Length'] = str(len(response.content))
+         response['Content-Length'] = str(len(response.content))
 
     # Devolvemos la response
-    return response
+         return  response

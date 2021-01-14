@@ -26,6 +26,34 @@ class StartedFilter(SimpleListFilter):
 
         else:
             return queryset.all()
+class ThemeFilter(SimpleListFilter):
+    title = 'themeVotation'  
+    parameter_name = 'themeVotation'
+    
+    def lookups(self, request, model_admin):
+        return [
+              ('El', 'Electoral'),
+              ('Si', 'Self-interest'),
+              ('Kw', 'Knowledge'),
+              ('Ts', 'Testing'),
+              ('Su', 'Survey'),
+
+        ] 
+
+    def queryset(self, request, queryset): 
+        if self.value() == 'El':
+            return queryset.exclude(themeVotation ='Si').exclude(themeVotation ='Kw').exclude(themeVotation ='Ts').exclude(themeVotation ='Su')
+        if self.value() == 'Si':
+            return queryset.exclude(themeVotation ='El').exclude(themeVotation ='Kw').exclude(themeVotation ='Ts').exclude(themeVotation ='Su')
+        if self.value() == 'Kw':
+            return queryset.exclude(themeVotation ='El').exclude(themeVotation ='Si').exclude(themeVotation ='Ts').exclude(themeVotation ='Su')
+        if self.value() == 'Ts':
+            return queryset.exclude(themeVotation ='El').exclude(themeVotation ='Si').exclude(themeVotation ='Kw').exclude(themeVotation ='Su')
+        if self.value() == 'Su':
+            return queryset.exclude(themeVotation ='El').exclude(themeVotation ='Si').exclude(themeVotation ='Kw').exclude(themeVotation ='Ts')
+
+        else:
+            return queryset.all()     
 
 class PreferenceFilter(SimpleListFilter):
     title = 'preference'  

@@ -9,30 +9,38 @@ from .filters import StartedFilter
 from .filters import PreferenceFilter
 from .filters import ThemeFilter
 
-
 def start(modeladmin, request, queryset):
     for v in queryset.all():
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
 
-
 def stop(ModelAdmin, request, queryset):
     for v in queryset.all():
         v.end_date = timezone.now()
         v.save()
 
+def restart(ModelAdmin, request, queryset):
+    for v in queryset.all():
+        v.end_date = None
+        v.save()
 
 def tally(ModelAdmin, request, queryset):
     for v in queryset.filter(end_date__lt=timezone.now()):
         token = request.session.get('auth-token', '')
         v.tally_votes(token)
         
-#A�adiendo acci�n para visualizar como van los votos actualmente sin necesidad de pararlo
+#Anadiendo accion para visualizar como van los votos actualmente sin necesidad de pararlo
 def currentTally(ModelAdmin, request, queryset):
     for v in queryset.all():
         token = request.session.get('auth-token', '')
-        v.tally_votes(token)           
+        v.tally_votes(token)
+
+#Accion para importar el tally a un txt y lo comprime en un zip
+def importTallyToFile(ModelAdmin, request, queryset):
+    for v in queryset.all():
+        token = request.session.get('auth-token', '')
+        v.tally_to_file(token)
 
 class QuestionOptionInline(admin.TabularInline):
     model = QuestionOption
@@ -50,7 +58,7 @@ class VotingAdmin(admin.ModelAdmin):
     list_filter = (StartedFilter, ThemeFilter, PreferenceFilter)
     search_fields = ('name', )
 
-    actions = [ start, stop, tally, currentTally ]
+    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ]
 
 
 admin.site.register(Voting, VotingAdmin)

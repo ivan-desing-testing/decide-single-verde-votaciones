@@ -47,13 +47,17 @@ class  VotingModelTC(BaseTestCase):
         self.assertEquals(v.question.options.all()[1].option,"option2")
         self.assertEquals(len(v.question.options.all()),2)
 
+    #David Gañán
+
     def testCreateVotingAPI(self):
         self.login()
         data = {
             'name':'Example',
+            'themeVotation':'Knowledge',
+            'preference':'High',
             'desc':'Descripcion',
             'question':'I wanna',
-            'question_opt':['car', 'house', 'party']
+            'question_opt':['car', 'house', 'party']     
         }
         
         response = self.client.post('/voting/',data,format='json')
@@ -61,8 +65,9 @@ class  VotingModelTC(BaseTestCase):
 
         v = Voting.objects.get(name="Example")
         self.assertEqual(v.desc,'Descripcion')
-
-
+        self.assertEqual(v.themeVotation,'Knowledge')
+        self.assertEqual(v.preference,'High')
+        
 
 class VotingTestCase(BaseTestCase):
 
@@ -177,6 +182,8 @@ class VotingTestCase(BaseTestCase):
 
         data = {
             'name': 'Example',
+            'themeVotation':'Knowledge',
+            'preference':'High',
             'desc': 'Description example',
             'question': 'I want a ',
             'question_opt': ['cat', 'dog', 'horse']

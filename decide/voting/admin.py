@@ -9,8 +9,8 @@ from .filters import StartedFilter
 from .filters import PreferenceFilter
 from .filters import ThemeFilter
 
-from import_export import resources
-from import_export.admin import ImportExportModelAdmin
+#from import_export import resources
+#from import_export.admin import ImportExportModelAdmin
 
 def start(modeladmin, request, queryset):
     for v in queryset.all():
@@ -46,9 +46,9 @@ def importTallyToFile(ModelAdmin, request, queryset):
         v.tally_to_file(token)
 
 
-def export(ModelAdmin, request, queryset):
-    dataset = VotingResource().export()
-    print(dataset.csv)
+#def export(ModelAdmin, request, queryset):
+#    dataset = VotingResource().export()
+#    print(dataset.csv)
 
 class QuestionOptionInline(admin.TabularInline):
     model = QuestionOption
@@ -58,13 +58,13 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [QuestionOptionInline]
 
 
-class VotingResource(resources.ModelResource):
+#class VotingResource(resources.ModelResource):
+#
+#    class Meta:
+#        model = Voting
+#        fields = ('id', 'name', 'postproc',)
 
-    class Meta:
-        model = Voting
-        fields = ('id', 'name', 'postproc',)
-
-class VotingAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+class VotingAdmin(admin.ModelAdmin):
     list_display = ('name', 'themeVotation', 'preference', 'start_date', 'end_date')
     readonly_fields = ('start_date', 'end_date', 'pub_key',
                        'tally', 'postproc')
@@ -72,9 +72,8 @@ class VotingAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_filter = (StartedFilter, ThemeFilter, PreferenceFilter)
     search_fields = ('name', )
 
-    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ,export]
+    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ]
 
-    resource_class = VotingResource
 
 
 

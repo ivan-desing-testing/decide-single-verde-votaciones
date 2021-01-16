@@ -10,8 +10,6 @@ from .filters import PreferenceFilter
 from .filters import ThemeFilter
 from .filters import ScopeFilter
 
-#from import_export import resources
-#from import_export.admin import ImportExportModelAdmin
 
 def start(modeladmin, request, queryset):
     for v in queryset.all():
@@ -41,15 +39,10 @@ def currentTally(ModelAdmin, request, queryset):
         v.tally_votes(token)
 
 #Accion para importar el tally a un txt y lo comprime en un zip
-def importTallyToFile(ModelAdmin, request, queryset):
+def exportTallyToFile(ModelAdmin, request, queryset):
     for v in queryset.all():
         token = request.session.get('auth-token', '')
         v.tally_to_file(token)
-
-
-#def export(ModelAdmin, request, queryset):
-#    dataset = VotingResource().export()
-#    print(dataset.csv)
 
 class QuestionOptionInline(admin.TabularInline):
     model = QuestionOption
@@ -60,13 +53,6 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = (ScopeFilter,)
     inlines = [QuestionOptionInline]
 
-
-#class VotingResource(resources.ModelResource):
-#
-#    class Meta:
-#        model = Voting
-#        fields = ('id', 'name', 'postproc',)
-
 class VotingAdmin(admin.ModelAdmin):
     list_display = ('name', 'themeVotation', 'preference', 'start_date', 'end_date')
     readonly_fields = ('start_date', 'end_date', 'pub_key',
@@ -75,7 +61,7 @@ class VotingAdmin(admin.ModelAdmin):
     list_filter = (StartedFilter, ThemeFilter, PreferenceFilter)
     search_fields = ('name', )
 
-    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ]
+    actions = [ start, stop, restart, tally, currentTally, exportTallyToFile]
 
 
 

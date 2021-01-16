@@ -10,8 +10,8 @@ from django.http import HttpResponse
 from base import mods
 from base.models import Auth, Key
 import zipfile
-# from import_export import resources
-# from import_export.admin import ImportExportModelAdmin
+from django.http import HttpResponseRedirect
+
 
 
 class Question(models.Model):
@@ -167,8 +167,8 @@ class Voting(models.Model):
 
         postproc_list = self.postproc
 
-        doc_name = './system_docs/Tally_Voting_'+ str(id) +'.txt'
-        zip_name = './system_docs/Tally_Voting_'+ str(id) +'.zip'
+        doc_name = './voting/static_files/tally_report_' + str(id) + '.txt'
+        zip_name = './voting/static_files/tally_report_' + str(id) + '.zip'
 
         document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
             start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'
@@ -189,8 +189,6 @@ class Voting(models.Model):
         doc_zip.write(doc_name, compress_type=zipfile.ZIP_DEFLATED)
 
         doc_zip.close()
-
-
 
     def __str__(self):
         return self.name

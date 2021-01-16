@@ -9,6 +9,7 @@ from .models import Question, QuestionOption, Voting
 from .serializers import SimpleVotingSerializer, VotingSerializer
 from base.perms import UserIsStaff
 from base.models import Auth
+from django.http import HttpResponse
 
 
 class VotingView(generics.ListCreateAPIView):
@@ -99,3 +100,21 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             msg = 'Action not found, try with start, stop or tally'
             st = status.HTTP_400_BAD_REQUEST
         return Response(msg, status=st)
+
+def tally_download(request,id,type):
+    response = ''
+    try:
+        if(type=='txt'):
+            fsock = open('./voting/static_files/tally_report_'+ str(id) +'.'+str(type), 'r')
+            response = HttpResponse(fsock, content_type='txt')
+        elif(type=='zip'):
+            fsock = open('./voting/static_files/tally_report_' + str(id) +'.'+str(type), 'rb')
+            response = HttpResponse(fsock, content_type='application/force-download')
+        else:
+            print("LOG: FALLO EN LA DESCARGA")
+            raise ValueError("type must be txt or zip.")
+        response['Content-Disposition'] = "attachment; filename=tally_report_"+str(id)+"."+str(type)
+    except ValueError as e:
+        print(e)
+
+    return response

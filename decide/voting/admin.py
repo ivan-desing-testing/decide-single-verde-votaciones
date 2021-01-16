@@ -8,6 +8,7 @@ from .models import Voting
 from .filters import StartedFilter
 from .filters import PreferenceFilter
 from .filters import ThemeFilter
+from .filters import ScopeFilter
 
 #from import_export import resources
 #from import_export.admin import ImportExportModelAdmin
@@ -55,6 +56,8 @@ class QuestionOptionInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('desc','scopes',)
+    list_filter = (ScopeFilter,)
     inlines = [QuestionOptionInline]
 
 

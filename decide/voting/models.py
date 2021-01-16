@@ -16,7 +16,19 @@ import zipfile
 
 class Question(models.Model):
     desc = models.TextField()
-   
+
+    SCOPES = (
+        ('Lit', 'Literature'),
+        ('Ent', 'Entertainment'),
+        ('Geo', 'Geography'),
+        ('His', 'History'),
+        ('Sci', 'Science'),
+        ('Spo', 'Sports'),
+        ('Oth', 'Other'),
+
+    )
+
+    scopes = models.CharField(max_length=4, blank=True, null=True, choices=SCOPES)
 
     def __str__(self):
         return self.desc

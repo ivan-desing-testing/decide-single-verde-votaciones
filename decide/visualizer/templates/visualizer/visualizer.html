@@ -10,6 +10,50 @@
 {% endblock %}
 
 {% block content %}
+
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src = "https://code.highcharts.com/highcharts.js"></script> 
+<script src = "https://code.highcharts.com/modules/data.js"></script>
+
+
+      <script language = "JavaScript">
+         $(document).ready(function() {
+            var data = {
+               table: 'datatable2'
+            };
+            var chart = {
+               type: 'column'
+            };
+            var title = {
+               text: 'Gráfica de: '   +   [[ voting.name ]]
+            };      
+            var yAxis = {
+               allowDecimals: false,
+               title: {
+                  text: 'Número de votos'
+               }
+            };
+            var tooltip = {
+               formatter: function () {
+                  return '<b>' + this.series.name + '</b><br/>' +
+                     this.point.y + ' ' + this.point.name.toLowerCase();
+               }
+            };
+            var credits = {
+               enabled: false
+            };  
+            var json = {};   
+            json.chart = chart; 
+            json.title = title; 
+            json.data = data;
+            json.yAxis = yAxis;
+            json.credits = credits;  
+            json.tooltip = tooltip;  
+            $('#grafica').highcharts(json);
+         });
+      </script>
+      
+
     <div id="app-visualizer">
         <!-- Navbar -->
         <b-navbar type="dark" variant="secondary">
@@ -20,10 +64,11 @@
             <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
 
             <h2 v-if="!voting.start_date">Votación no comenzada</h2>
-            <div v-else-if>
-                <h2 class="!voting.end_date">Recuento actual</h2>
+            
+            <div v-else-if = "!voting.end_date">
+                <h2 class="!voting.end_date">Recuento actual:</h2>
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id = "datatable2">
                     <thead>
                         <tr>
                             <th>Opción</th>
@@ -37,13 +82,17 @@
                             <td>[[opt.postproc]]</td>
                             <td class="text-muted">[[opt.votes]]</td>
                         </tr>
+                        
                     </tbody>
                 </table>
+                <div id = "grafica" style = "width: 750px; height: 600px; margin: 0 auto"></div>
+                          
             </div>
+
             <div v-else>
                 <h2 class="heading">Resultados:</h2>
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id = "datatable2">
                     <thead>
                         <tr>
                             <th>Opción</th>
@@ -58,11 +107,12 @@
                             <td class="text-muted">[[opt.votes]]</td>
                         </tr>
                     </tbody>
-                </table>
+                </table>    
+                <div id = "grafica" style = "width: 750px; height: 600px; margin: 0 auto"></div>         
             </div>
-
         </div>
     </div>
+
 {% endblock %}
 
 {% block extrabody %}
@@ -83,3 +133,4 @@
     </script>
 </body>
 {% endblock %}
+

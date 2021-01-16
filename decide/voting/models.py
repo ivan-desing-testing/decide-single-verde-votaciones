@@ -10,9 +10,8 @@ from django.http import HttpResponse
 from base import mods
 from base.models import Auth, Key
 import zipfile
-
-from import_export import resources
-from import_export.admin import ImportExportModelAdmin
+# from import_export import resources
+# from import_export.admin import ImportExportModelAdmin
 
 
 class Question(models.Model):

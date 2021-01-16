@@ -9,6 +9,9 @@ from .filters import StartedFilter
 from .filters import PreferenceFilter
 from .filters import ThemeFilter
 
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 def start(modeladmin, request, queryset):
     for v in queryset.all():
         v.create_pubkey()
@@ -42,6 +45,11 @@ def importTallyToFile(ModelAdmin, request, queryset):
         token = request.session.get('auth-token', '')
         v.tally_to_file(token)
 
+
+def export(ModelAdmin, request, queryset):
+    dataset = VotingResource().export()
+    print(dataset.csv)
+
 class QuestionOptionInline(admin.TabularInline):
     model = QuestionOption
 
@@ -50,7 +58,13 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [QuestionOptionInline]
 
 
-class VotingAdmin(admin.ModelAdmin):
+class VotingResource(resources.ModelResource):
+
+    class Meta:
+        model = Voting
+        fields = ('id', 'name', 'postproc',)
+
+class VotingAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('name', 'themeVotation', 'preference', 'start_date', 'end_date')
     readonly_fields = ('start_date', 'end_date', 'pub_key',
                        'tally', 'postproc')
@@ -58,7 +72,10 @@ class VotingAdmin(admin.ModelAdmin):
     list_filter = (StartedFilter, ThemeFilter, PreferenceFilter)
     search_fields = ('name', )
 
-    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ]
+    actions = [ start, stop, restart, tally, currentTally, importTallyToFile ,export]
+
+    resource_class = VotingResource
+
 
 
 admin.site.register(Voting, VotingAdmin)

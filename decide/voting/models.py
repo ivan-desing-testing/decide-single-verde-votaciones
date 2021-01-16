@@ -10,8 +10,8 @@ from django.http import HttpResponse
 from base import mods
 from base.models import Auth, Key
 import zipfile
-from import_export import resources
-from import_export.admin import ImportExportModelAdmin
+# from import_export import resources
+# from import_export.admin import ImportExportModelAdmin
 
 
 class Question(models.Model):
@@ -178,10 +178,8 @@ class Voting(models.Model):
 
         doc_zip.close()
 
-        buffer = io.BytesIO()
-
-        HttpResponse(io.open(zip_name, mode="rb").read(), content_type='application/zip')
 
 
     def __str__(self):
         return self.name
+

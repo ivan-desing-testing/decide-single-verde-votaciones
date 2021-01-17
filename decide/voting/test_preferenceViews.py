@@ -71,7 +71,7 @@ class TestPreferenceViews(StaticLiveServerTestCase):
     element = self.driver.find_element(By.ID, "id_preference")
     locator = "option[@value='{}']".format(element.get_attribute("value"))
     selected_text = element.find_element(By.XPATH, locator).text
-    Self.assertTrue(selected_text == "---------")
+    self.assertTrue(selected_text == "---------")
     self.driver.find_element(By.ID, "id_preference").click()
     dropdown = self.driver.find_element(By.ID, "id_preference")
     dropdown.find_element(By.XPATH, "//option[. = 'High']").click()

@@ -90,7 +90,7 @@ class AdminTestCase(StaticLiveServerTestCase):
         dropdown.find_element(By.XPATH, "//option[. = 'http://localhost:8000']").click()
         self.driver.find_element(By.NAME, "_save").click()
 
-        #Comprobando que se crea la gráfica (aunque este vacia ya que no hay votos)
+        #Comprobando que NO se crea la gráfica
         self.driver.get("http://localhost:8000/visualizer/2/")
         self.driver.set_window_size(1778, 893)
         self.assertTrue(self.driver.find_element(By.CSS_SELECTOR, "h2").text == "Votación no comenzada")          

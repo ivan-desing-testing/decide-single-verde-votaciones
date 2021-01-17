@@ -37,6 +37,8 @@ class TestThemeVotationTest(StaticLiveServerTestCase):
           options = webdriver.ChromeOptions()
           options.headless = True
           self.driver = webdriver.Chrome(options=options)
+          self.usernameDecide = 'admin'
+          self.passwordDecide = 'adminpass'
 
           super().setUp()
 
@@ -47,12 +49,11 @@ class TestThemeVotationTest(StaticLiveServerTestCase):
           self.base.tearDown()
   
      def test_themeVotationTest(self):
-          self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
-          self.driver.set_window_size(1936, 1056)
-          self.driver.find_element(By.ID, "id_username").click()
-          self.driver.find_element(By.ID, "id_username").send_keys("davgangar1")
-          self.driver.find_element(By.ID, "id_password").send_keys("Se200uS123")
-          self.driver.find_element(By.ID, "id_password").send_keys(Keys.ENTER)
+          self.driver.get("http://localhost:8000/admin/")
+          self.driver.set_window_size(957, 727)
+          self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
+          self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)
+          self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
           self.driver.find_element(By.LINK_TEXT, "Votings").click()
           self.driver.find_element(By.LINK_TEXT, "Electoral").click()
           self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()

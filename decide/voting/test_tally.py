@@ -15,13 +15,18 @@ class TestTallyExport():
     def setup_method(self, method):
         self.driver = webdriver.Chrome()
         self.vars = {}
+        self.usernameDecide = 'admin'
+        self.passwordDecide = 'adminpass'
 
     def teardown_method(self, method):
         self.driver.quit()
 
     def test_testrestartvoting(self):
-        self.driver.get("http://localhost:8000/admin/admin/")
+        self.driver.get("http://localhost:8000/admin/")
         self.driver.set_window_size(957, 727)
+        self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
+        self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)
+        self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
         self.driver.find_element(By.LINK_TEXT, "Questions").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_desc").send_keys("desc question test")
@@ -111,12 +116,11 @@ class TestTallyExport():
         self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(4)").click()
 
     def test_testtallydownloadtxt(self):
-        self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
+
+        self.driver.get("http://localhost:8000/admin/")
         self.driver.set_window_size(957, 727)
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "footer").click()
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("admin12345")
+        self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
+        self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)
         self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
         self.driver.find_element(
             By.CSS_SELECTOR, ".model-question .addlink").click()
@@ -207,12 +211,12 @@ class TestTallyExport():
         self.driver.find_element(By.LINK_TEXT, "Questions").click()
 
     def test_testtallydownloadtxt(self):
-        self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
+        self.driver.get("http://localhost:8000/admin/")
         self.driver.set_window_size(957, 727)
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "footer").click()
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("admin12345")
+        self.driver.find_element(
+            By.ID, "id_username").send_keys(self.usernameDecide)
+        self.driver.find_element(
+            By.ID, "id_password").send_keys(self.passwordDecide)
         self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
         self.driver.find_element(
             By.CSS_SELECTOR, ".model-question .addlink").click()
@@ -305,6 +309,10 @@ class TestTallyExport():
     def test_testtallyexport(self):
         self.driver.get("http://localhost:8000/admin/")
         self.driver.set_window_size(957, 727)
+        self.driver.find_element(
+            By.ID, "id_username").send_keys(self.usernameDecide)
+        self.driver.find_element(
+            By.ID, "id_password").send_keys(self.passwordDecide)
         self.driver.find_element(By.LINK_TEXT, "Questions").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_desc").send_keys("desc test question")

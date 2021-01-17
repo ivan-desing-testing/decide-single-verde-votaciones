@@ -281,6 +281,13 @@ class VotingTestCase(BaseTestCase):
 
 class TallyTestCase(BaseTestCase):
     
+    def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
+        pk = v.pub_key
+        p, g, y = (pk.p, pk.g, pk.y)
+        k = MixCrypt(bits=bits)
+        k.k = ElGamal.construct((p, g, y))
+        return k.encrypt(msg)
+    
     def store_votes(self, v):
         voters = list(Census.objects.filter(voting_id=v.id))
         voter = voters.pop()

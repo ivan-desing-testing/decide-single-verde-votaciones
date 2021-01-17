@@ -282,3 +282,93 @@ class VotingTestCase(BaseTestCase):
         response = self.client.put('/voting/{}/'.format(voting.pk), data, format='json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), 'Voting already tallied')
+
+class TallyTestCase(BaseTestCase):
+
+    def test_export_tally_success(self):
+        v = self.create_voting()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+
+        v.tally_to_file(self.token)
+        id = v.id
+        file = open('./voting/static_files/tally_report_' + str(id) +'.'+'.txt', 'r')
+        zip = open('./voting/static_files/tally_report_' + str(id) +'.'+'.zip', 'rb')
+        self.assertEqual(id, )
+
+    def test_tally_download_txt(self):
+        v = self.create_voting()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+
+        v.tally_to_file(self.token)
+        id = v.id
+        file = open('./voting/static_files/tally_report_' +
+                    str(id) + '.'+'.txt', 'r')
+        zip = open('./voting/static_files/tally_report_' +
+                   str(id) + '.'+'.zip', 'rb')
+        self.assertEqual(id, )
+
+    def test_tally_download_zip(self):
+        v = self.create_voting()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+
+        v.tally_to_file(self.token)
+        id = v.id
+        file = open('./voting/static_files/tally_report_' +
+                    str(id) + '.'+'.txt', 'r')
+        zip = open('./voting/static_files/tally_report_' +
+                   str(id) + '.'+'.zip', 'rb')
+        self.assertEqual(id, )
+
+    def test_voting_restart(self):
+        v = self.create_voting()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        v.resta

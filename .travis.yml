@@ -18,9 +18,8 @@ install:
 script:
   - cd decide
   - cp travis_local_settings.py local_settings.py
-  - ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  - coverage run --branch --source=. ./manage.py test voting --keepdb --with-xunit
-  - coverage run --branch --source=. ./manage.py test visualizer --keepdb --with-xunit
+  #- ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
+  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
   - coverage xml
   - python-codacy-coverage -r coverage.xml
 deploy:

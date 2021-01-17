@@ -25,7 +25,7 @@ class SimpleTest(TestCase):
 
 class  VotingModelTC(BaseTestCase):
     def setUp(self):
-        q = Question(desc="Descripcion")
+        q = Question(desc="Descripcion", scopes="Geography")
         q.save()
 
         opt1=QuestionOption(question=q, option="option1")
@@ -46,8 +46,7 @@ class  VotingModelTC(BaseTestCase):
         self.assertEquals(v.question.options.all()[0].option,"option1")
         self.assertEquals(v.question.options.all()[1].option,"option2")
         self.assertEquals(len(v.question.options.all()),2)
-
-    #David Gañán
+        self.assertEquals(v.question.scopes,"Geography")
 
     def testCreateVotingAPI(self):
         self.login()
@@ -57,6 +56,7 @@ class  VotingModelTC(BaseTestCase):
             'preference':'High',
             'desc':'Descripcion',
             'question':'I wanna',
+            'question_scopes':'Geography',
             'question_opt':['car', 'house', 'party']     
         }
         
@@ -67,8 +67,7 @@ class  VotingModelTC(BaseTestCase):
         self.assertEqual(v.desc,'Descripcion')
         self.assertEqual(v.themeVotation,'Knowledge')
         self.assertEqual(v.preference,'High')
-        
-
+        self.assertEqual(v.question.scopes,'Geography')
     def testCreateVotingUrlErroneaAPI(self):
         self.login()
         data = {
@@ -76,6 +75,7 @@ class  VotingModelTC(BaseTestCase):
             'preference': 'High' ,
             'desc':'Descripcion',
             'question':'I wanna',
+            'question_scopes':'Geography',
             'question_opt':['car', 'house', 'party']
         }
         
@@ -93,9 +93,9 @@ class VotingTestCase(BaseTestCase):
     def test_Voting_toString(self):
         v = self.create_voting()
         self.assertEquals(str(v),"test voting")
-        self.assertEquals(str(v.question),"test question")
+        self.assertEquals(str(v.question.desc),"test question")
         self.assertEquals(str(v.question.options.all()[0]),"option 1 (2)")
-
+        self.assertEquals(str(v.question.scopes),"Geography")
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
         pk = v.pub_key
         p, g, y = (pk.p, pk.g, pk.y)
@@ -104,7 +104,7 @@ class VotingTestCase(BaseTestCase):
         return k.encrypt(msg)
 
     def create_voting(self):
-        q = Question(desc='test question')
+        q = Question(desc='test question',scopes='Geography')
         q.save()
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
@@ -199,6 +199,7 @@ class VotingTestCase(BaseTestCase):
             'preference':'High',
             'desc': 'Description example',
             'question': 'I want a ',
+            'question_scopes':'Geography',
             'question_opt': ['cat', 'dog', 'horse']
         }
 

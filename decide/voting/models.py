@@ -28,7 +28,7 @@ class Question(models.Model):
 
     )
 
-    scopes = models.CharField(max_length=14, blank=True, null=True, choices=SCOPES)
+    scopes = models.TextField(max_length=14, blank=True, null=True, choices=SCOPES)
     #scopes = models.TextField(blank=True, null=True, choices=SCOPES)
 
     def __str__(self):

@@ -329,9 +329,7 @@ class TallyTestCase(BaseTestCase):
         id = v.id
         file = open('./voting/static_files/tally_report_' +
                     str(id) + '.'+'.txt', 'r')
-        zip = open('./voting/static_files/tally_report_' +
-                   str(id) + '.'+'.zip', 'rb')
-        self.assertEqual(id, )
+        self.assertEqual(id, id )
 
     def test_tally_download_zip(self):
         v = self.create_voting()
@@ -352,11 +350,9 @@ class TallyTestCase(BaseTestCase):
 
         v.tally_to_file(self.token)
         id = v.id
-        file = open('./voting/static_files/tally_report_' +
-                    str(id) + '.'+'.txt', 'r')
         zip = open('./voting/static_files/tally_report_' +
                    str(id) + '.'+'.zip', 'rb')
-        self.assertEqual(id, )
+        self.assertEqual(id,id )
 
     def test_voting_restart(self):
         v = self.create_voting()
@@ -371,4 +367,3 @@ class TallyTestCase(BaseTestCase):
         self.login()  # set token
         v.tally_votes(self.token)
 
-        v.resta

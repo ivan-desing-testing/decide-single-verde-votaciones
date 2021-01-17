@@ -66,8 +66,8 @@ class Voting(models.Model):
         ('L', 'Low'),
     )
     name = models.CharField(max_length=200)
-    themeVotation = models.CharField(max_length=14, blank=False, null=False, choices=THEMES_VOTATIONS)
-    preference = models.CharField(max_length=14, blank=False, null=False, choices=TYPES_PREFERENCES)
+    themeVotation = models.TextField(max_length=14, blank=False, null=False, choices=THEMES_VOTATIONS)
+    preference = models.TextField(max_length=14, blank=False, null=False, choices=TYPES_PREFERENCES)
     desc = models.TextField( blank=True, null=True, )
     question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE)
 

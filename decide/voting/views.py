@@ -30,11 +30,11 @@ class VotingView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = (UserIsStaff,)
         self.check_permissions(request)
-        for data in ['name', 'themeVotation', 'preference', 'desc', 'question', 'question_opt']:
+        for data in ['name', 'themeVotation', 'preference', 'desc', 'question', 'question_opt', 'question_scopes']:
             if not data in request.data:
                 return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
-        question = Question(desc=request.data.get('question'),scopes=request.data.get('question'))
+        question = Question(desc=request.data.get('question'),scopes=request.data.get('question_scopes'))
         question.save()
         for idx, q_opt in enumerate(request.data.get('question_opt')):
             opt = QuestionOption(question=question, option=q_opt, number=idx)
@@ -90,12 +90,19 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             elif not voting.end_date:
                 msg = 'Voting is not stopped'
                 st = status.HTTP_400_BAD_REQUEST
-            elif voting.tally:
-                msg = 'Voting already tallied'
-                st = status.HTTP_400_BAD_REQUEST
             else:
                 voting.tally_votes(request.auth.key)
                 msg = 'Voting tallied'
+        elif action == 'currentTally':
+            if not voting.start_date:
+                msg = 'Voting is not started'
+                st = status.HTTP_400_BAD_REQUEST
+            elif voting.end_date:
+                msg = 'Voting is stopped, you have to Tally now'
+                st = status.HTTP_400_BAD_REQUEST
+            else:
+                voting.tally_votes(request.auth.key)
+                msg = 'Voting live tallied'
         else:
             msg = 'Action not found, try with start, stop or tally'
             st = status.HTTP_400_BAD_REQUEST

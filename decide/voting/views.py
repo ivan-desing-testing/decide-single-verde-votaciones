@@ -90,12 +90,19 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             elif not voting.end_date:
                 msg = 'Voting is not stopped'
                 st = status.HTTP_400_BAD_REQUEST
-            elif voting.tally:
-                msg = 'Voting already tallied'
-                st = status.HTTP_400_BAD_REQUEST
             else:
                 voting.tally_votes(request.auth.key)
                 msg = 'Voting tallied'
+        elif action == 'currentTally':
+            if not voting.start_date:
+                msg = 'Voting is not started'
+                st = status.HTTP_400_BAD_REQUEST
+            elif voting.end_date:
+                msg = 'Voting is stopped, you have to Tally now'
+                st = status.HTTP_400_BAD_REQUEST
+            else:
+                voting.tally_votes(request.auth.key)
+                msg = 'Voting live tallied'
         else:
             msg = 'Action not found, try with start, stop or tally'
             st = status.HTTP_400_BAD_REQUEST

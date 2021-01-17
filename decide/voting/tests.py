@@ -285,6 +285,22 @@ class VotingTestCase(BaseTestCase):
         self.assertEqual(response.json(), 'Voting already tallied')
 
 class TallyTestCase(BaseTestCase):
+    
+    def create_voting(self):
+        q = Question(desc='test question',scopes='Geography')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+
+        return v
 
     def test_export_tally_success(self):
         v = self.create_voting()

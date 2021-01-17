@@ -28,7 +28,7 @@ class Question(models.Model):
 
     )
 
-    scopes = models.CharField(max_length=4, blank=True, null=True, choices=SCOPES)
+    scopes = models.CharField(max_length=4, blank=False, null=False, choices=SCOPES)
 
     def __str__(self):
         return self.desc
@@ -173,9 +173,10 @@ class Voting(models.Model):
         document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
             start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'
 
-        for postproc in postproc_list:
-            document = document + 'Option '+str(postproc['number'])+': '+str(
-                postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
+        if(postproc_list!=None):
+            for postproc in postproc_list:
+                document = document + 'Option '+str(postproc['number'])+': '+str(
+                    postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
 
         print("LOG: Save Tally in File")
 

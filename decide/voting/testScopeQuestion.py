@@ -31,6 +31,8 @@ class TestTestScopeQuestion(StaticLiveServerTestCase):
   
   def setUp(self):
     #Load base test functionality for decide
+    self.usernameDecide = 'admin'
+    self.passwordDecide = 'adminpass'
     self.base = BaseTestCase()
     self.base.setUp()
 
@@ -47,10 +49,10 @@ class TestTestScopeQuestion(StaticLiveServerTestCase):
     self.base.tearDown()
 
   def test_testScopeQuestion(self):
-    self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
-    self.driver.set_window_size(976, 1040)
-    self.driver.find_element(By.ID, "id_username").send_keys("oscar")
-    self.driver.find_element(By.ID, "id_password").send_keys("oscardorado")
+    self.driver.get("http://localhost:8000/admin/login/?next=/admin/)
+    self.driver.set_window_size(957, 727)
+    self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
+    self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)
     self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
     self.driver.find_element(By.LINK_TEXT, "Questions").click()
     self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()

@@ -17,7 +17,14 @@ install:
   - pip install codacy-coverage
 script:
   - cd decide
+  - cp travis_local_settings.py local_settings.py
   - ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage run --branch --source=. ./manage.py test voting --keepdb --with-xunit
+  - coverage run --branch --source=. ./manage.py test visualizer --keepdb --with-xunit
   - coverage xml
   - python-codacy-coverage -r coverage.xml
+deploy:
+  provider: heroku
+  app: decide-single-verde-votaciones
+  strategy: git
+  api_key: bc5548c4-bd7e-40d3-866c-4a1473f1f439

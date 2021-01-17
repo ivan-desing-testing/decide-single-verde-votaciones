@@ -210,7 +210,7 @@ class TestTallyExport():
         self.driver.find_element(By.LINK_TEXT, "Home").click()
         self.driver.find_element(By.LINK_TEXT, "Questions").click()
 
-    def test_testtallydownloadtxt(self):
+    def test_testtallydownloadzip(self):
         self.driver.get("http://localhost:8000/admin/")
         self.driver.set_window_size(957, 727)
         self.driver.find_element(

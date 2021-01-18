@@ -5,11 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from base import mods
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
-from django.contrib.auth.models import User
 
 from base.tests import BaseTestCase
 

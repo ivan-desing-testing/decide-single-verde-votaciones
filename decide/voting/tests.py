@@ -339,85 +339,85 @@ class TallyTestCase(BaseTestCase):
 
         return v
 
-    def test_export_tally_success(self):
-        v = self.create_voting()
-        self.create_voters(v)
+    # def test_export_tally_success(self):
+    #     v = self.create_voting()
+    #     self.create_voters(v)
 
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.save()
+    #     v.create_pubkey()
+    #     v.start_date = timezone.now()
+    #     v.save()
 
-        clear = self.store_votes(v)
+    #     clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+    #     self.login()  # set token
+    #     v.tally_votes(self.token)
 
-        tally = v.tally
-        tally.sort()
-        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+    #     tally = v.tally
+    #     tally.sort()
+    #     tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
 
-        v.tally_to_file(self.token)
-        id = v.id
-        file = open('./voting/static_files/tally_report_' + str(id) +'.'+'.txt', 'r')
-        zip = open('./voting/static_files/tally_report_' + str(id) +'.'+'.zip', 'rb')
-        self.assertEqual(id, )
+    #     v.tally_to_file(self.token)
+    #     id = v.id
+    #     file = open('./voting/static_files/tally_report_' + str(id) +'.'+'.txt', 'r')
+    #     zip = open('./voting/static_files/tally_report_' + str(id) +'.'+'.zip', 'rb')
+    #     self.assertEqual(id, )
 
-    def test_tally_download_txt(self):
-        v = self.create_voting()
-        self.create_voters(v)
+    # def test_tally_download_txt(self):
+    #     v = self.create_voting()
+    #     self.create_voters(v)
 
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.save()
+    #     v.create_pubkey()
+    #     v.start_date = timezone.now()
+    #     v.save()
 
-        clear = self.store_votes(v)
+    #     clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+    #     self.login()  # set token
+    #     v.tally_votes(self.token)
 
-        tally = v.tally
-        tally.sort()
-        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+    #     tally = v.tally
+    #     tally.sort()
+    #     tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
 
-        v.tally_to_file(self.token)
-        id = v.id
-        file = open('./voting/static_files/tally_report_' +
-                    str(id) + '.'+'.txt', 'r')
-        self.assertEqual(id, id )
+    #     v.tally_to_file(self.token)
+    #     id = v.id
+    #     file = open('./voting/static_files/tally_report_' +
+    #                 str(id) + '.'+'.txt', 'r')
+    #     self.assertEqual(id, id )
 
-    def test_tally_download_zip(self):
-        v = self.create_voting()
-        self.create_voters(v)
+    # def test_tally_download_zip(self):
+    #     v = self.create_voting()
+    #     self.create_voters(v)
 
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.save()
+    #     v.create_pubkey()
+    #     v.start_date = timezone.now()
+    #     v.save()
 
-        clear = self.store_votes(v)
+    #     clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+    #     self.login()  # set token
+    #     v.tally_votes(self.token)
 
-        tally = v.tally
-        tally.sort()
-        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+    #     tally = v.tally
+    #     tally.sort()
+    #     tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
 
-        v.tally_to_file(self.token)
-        id = v.id
-        zip = open('./voting/static_files/tally_report_' +
-                   str(id) + '.'+'.zip', 'rb')
-        self.assertEqual(id,id )
+    #     v.tally_to_file(self.token)
+    #     id = v.id
+    #     zip = open('./voting/static_files/tally_report_' +
+    #                str(id) + '.'+'.zip', 'rb')
+    #     self.assertEqual(id,id )
 
-    def test_voting_restart(self):
-        v = self.create_voting()
-        self.create_voters(v)
+    # def test_voting_restart(self):
+    #     v = self.create_voting()
+    #     self.create_voters(v)
 
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.save()
+    #     v.create_pubkey()
+    #     v.start_date = timezone.now()
+    #     v.save()
 
-        clear = self.store_votes(v)
+    #     clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+    #     self.login()  # set token
+    #     v.tally_votes(self.token)
 

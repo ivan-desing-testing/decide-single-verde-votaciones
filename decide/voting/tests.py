@@ -109,7 +109,7 @@ class VotingTestCase(BaseTestCase):
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
             opt.save()
-        v = Voting(name='test voting', question=q)
+        v = Voting(name='test voting', question=q, themeVotation='Survey', preference='Low')
         v.save()
 
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
@@ -279,12 +279,65 @@ class VotingTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), 'Voting already stopped')
 
-        data = {'action': 'tally'}
-        response = self.client.put('/voting/{}/'.format(voting.pk), data, format='json')
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), 'Voting already tallied')
-
 class TallyTestCase(BaseTestCase):
+    def get_or_create_user(self, pk):
+        user, _ = User.objects.get_or_create(pk=pk)
+        user.username = 'user{}'.format(pk)
+        user.set_password('qwerty')
+        user.save()
+        return user
+    
+    def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
+        pk = v.pub_key
+        p, g, y = (pk.p, pk.g, pk.y)
+        k = MixCrypt(bits=bits)
+        k.k = ElGamal.construct((p, g, y))
+        return k.encrypt(msg)
+    
+    def store_votes(self, v):
+        voters = list(Census.objects.filter(voting_id=v.id))
+        voter = voters.pop()
+
+        clear = {}
+        for opt in v.question.options.all():
+            clear[opt.number] = 0
+            for i in range(random.randint(0, 5)):
+                a, b = self.encrypt_msg(opt.number, v)
+                data = {
+                    'voting': v.id,
+                    'voter': voter.voter_id,
+                    'vote': { 'a': a, 'b': b },
+                }
+                clear[opt.number] += 1
+                user = self.get_or_create_user(voter.voter_id)
+                self.login(user=user.username)
+                voter = voters.pop()
+                mods.post('store', json=data)
+        return clear
+    
+    def create_voters(self, v):
+        for i in range(100):
+            u, _ = User.objects.get_or_create(username='testvoter{}'.format(i))
+            u.is_active = True
+            u.save()
+            c = Census(voter_id=u.id, voting_id=v.id)
+            c.save()
+    
+    def create_voting(self):
+        q = Question(desc='test question',scopes='Geography')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+
+        return v
 
     def test_export_tally_success(self):
         v = self.create_voting()

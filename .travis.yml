@@ -16,12 +16,15 @@ install:
   - pip install selenium
   - pip install codacy-coverage
 script:
+  #- cd decide
+  #- cp travis_local_settings.py local_settings.py
+  #- ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
+  #- coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  #- coverage xml
+  #- python-codacy-coverage -r coverage.xml
   - cd decide
   - cp travis_local_settings.py local_settings.py
-  #- ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  - coverage run --branch --source=. ./manage.py test --keepdb
 deploy:
   provider: heroku
   app: decide-single-verde-votaciones

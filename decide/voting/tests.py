@@ -280,6 +280,12 @@ class VotingTestCase(BaseTestCase):
         self.assertEqual(response.json(), 'Voting already stopped')
 
 class TallyTestCase(BaseTestCase):
+    def get_or_create_user(self, pk):
+        user, _ = User.objects.get_or_create(pk=pk)
+        user.username = 'user{}'.format(pk)
+        user.set_password('qwerty')
+        user.save()
+        return user
     
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
         pk = v.pub_key

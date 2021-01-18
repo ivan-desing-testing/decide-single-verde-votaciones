@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from base.tests import BaseTestCase
 
 
-class AdminTestCase(StaticLiveServerTestCase):
+class AdminTestCase():
 
 
     def setUp(self):

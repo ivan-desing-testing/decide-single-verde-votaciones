@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 
 from base.tests import BaseTestCase
 
-class TestTallyExport(StaticLiveServerTestCase):
+class TestTallyExport():
 
     def setup_method(self, method):
         self.vars = {}

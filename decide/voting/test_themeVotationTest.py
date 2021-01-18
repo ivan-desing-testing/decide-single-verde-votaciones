@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from base.tests import BaseTestCase
 
 
-class TestThemeVotationTest(StaticLiveServerTestCase):
+class TestThemeVotationTest():
      def setUp(self):
 
         #Load base test functionality for decide

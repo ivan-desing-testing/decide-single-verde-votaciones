@@ -4,10 +4,14 @@ services:
   - postgresql
 addons:
   postgresql: "9.4"
+  chrome: stable
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
+  - psql test_decide -c "GRANT ALL ON ALL TABLES IN SCHEMA public to decide;"
+  - psql test_decide -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to decide;"
+  - psql test_decide -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to decide;"
 language: python
 python:
   - "3.6"
@@ -17,13 +21,15 @@ install:
   - pip install codacy-coverage
 script:
   - cd decide
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
+  - tar -xzf geckodriver-v0.27.0-linux64.tar.gz
+  - chmod +x geckodriver 
+  - sudo cp geckodriver /usr/bin/
+  - rm geckodriver-v0.27.0-linux64.tar.gz
   - cp travis_local_settings.py local_settings.py
-  #- ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  - coverage run --branch --source=. ./manage.py test --keepdb
 deploy:
   provider: heroku
   app: decide-single-verde-votaciones
   strategy: git
-  api_key: bc5548c4-bd7e-40d3-866c-4a1473f1f439
+  api_key: $HEROKU_AUTH_TOKEN

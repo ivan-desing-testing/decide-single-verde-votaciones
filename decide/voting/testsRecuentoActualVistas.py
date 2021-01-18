@@ -6,14 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from base import mods
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
-from django.contrib.auth.models import User
 
 from base.tests import BaseTestCase
 
-class AdminTestCase(StaticLiveServerTestCase):
+
+class AdminTestCase():
 
 
     def setUp(self):
@@ -21,9 +18,9 @@ class AdminTestCase(StaticLiveServerTestCase):
         self.base = BaseTestCase()
         self.base.setUp()
 
-        options = webdriver.ChromeOptions()
+        options = webdriver.FirefoxOptions()
         options.headless = True
-        self.driver = webdriver.Chrome(options=options)
+        driver = webdriver.Firefox(options=options)
 
         super().setUp()            
             

@@ -1,22 +1,24 @@
-import pytest
-import time
-import json
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from django.test import TestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+
+from base.tests import BaseTestCase
 
 class TestTallyExport():
 
     def setup_method(self, method):
-        self.driver = webdriver.Chrome()
         self.vars = {}
         self.usernameDecide = 'admin'
         self.passwordDecide = 'adminpass'
+
+        options = webdriver.FirefoxOptions()
+        options.headless = True
+        driver = webdriver.Firefox(options=options)
 
     def teardown_method(self, method):
         self.driver.quit()

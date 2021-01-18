@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 
 from base.tests import BaseTestCase
 
-class AdminTestCase(StaticLiveServerTestCase):
+class AdminTestCase():
 
 
     def setUp(self):
@@ -29,12 +29,12 @@ class AdminTestCase(StaticLiveServerTestCase):
 
         self.base.tearDown()
 
-    #LOS SIGUIENTES TEST DEBEN SER EJECUTADOS CON LA BASE DE DATOS DE VOTACIONES VACÍA, YA QUE SE USAN LAS IDs DE LAS VOTACIONES CREADAS.
+    #LOS SIGUIENTES TEST DEBEN SER EJECUTADOS CON LA BASE DE DATOS DE VOTACIONES VACï¿½A, YA QUE SE USAN LAS IDs DE LAS VOTACIONES CREADAS.
     
-    #Test para comprobar que la gráfica se genera en la votación comenzada
+    #Test para comprobar que la grï¿½fica se genera en la votaciï¿½n comenzada
     def test_grafica_ver(self):
 
-        #Creando la votación
+        #Creando la votaciï¿½n
         self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
         self.driver.set_window_size(1778, 893)
         self.driver.find_element(By.ID, "id_username").click()
@@ -61,15 +61,15 @@ class AdminTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "action").click()
         self.driver.find_element(By.NAME, "index").click()
 
-        #Comprobando que se crea la gráfica (aunque este vacia ya que no hay votos)
+        #Comprobando que se crea la grï¿½fica (aunque este vacia ya que no hay votos)
         self.driver.get("http://localhost:8000/visualizer/1/")
         self.driver.set_window_size(1778, 893)
-        self.assertTrue( self.driver.find_element(By.CSS_SELECTOR, ".highcharts-title > tspan").text == "Gráfica de: Votacion de prueba") 
+        self.assertTrue( self.driver.find_element(By.CSS_SELECTOR, ".highcharts-title > tspan").text == "Grï¿½fica de: Votacion de prueba") 
 
-    #Test para comprobar que la gráfica NO se genera si la votación no ha comenzado
+    #Test para comprobar que la grï¿½fica NO se genera si la votaciï¿½n no ha comenzado
     def test_NO_grafica(self):
 
-        #Creando la votación
+        #Creando la votaciï¿½n
         self.driver.get("http://localhost:8000/admin/login/?next=/admin/")
         self.driver.set_window_size(1778, 893)
         self.driver.find_element(By.ID, "id_username").click()
@@ -90,7 +90,7 @@ class AdminTestCase(StaticLiveServerTestCase):
         dropdown.find_element(By.XPATH, "//option[. = 'http://localhost:8000']").click()
         self.driver.find_element(By.NAME, "_save").click()
 
-        #Comprobando que NO se crea la gráfica
+        #Comprobando que NO se crea la grï¿½fica
         self.driver.get("http://localhost:8000/visualizer/2/")
         self.driver.set_window_size(1778, 893)
-        self.assertTrue(self.driver.find_element(By.CSS_SELECTOR, "h2").text == "Votación no comenzada")          
+        self.assertTrue(self.driver.find_element(By.CSS_SELECTOR, "h2").text == "Votaciï¿½n no comenzada")          

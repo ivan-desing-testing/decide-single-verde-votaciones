@@ -1,14 +1,35 @@
+from wsgiref.util import FileWrapper
+import io
+from zipfile import *
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.http import HttpResponse
 
 from base import mods
 from base.models import Auth, Key
+import zipfile
+from django.http import HttpResponseRedirect
+
 
 
 class Question(models.Model):
     desc = models.TextField()
+
+    SCOPES = (
+        ('Lit', 'Literature'),
+        ('Ent', 'Entertainment'),
+        ('Geo', 'Geography'),
+        ('His', 'History'),
+        ('Sci', 'Science'),
+        ('Spo', 'Sports'),
+        ('Oth', 'Other'),
+
+    )
+
+    scopes = models.TextField(max_length=14, blank=True, null=True, choices=SCOPES)
+    #scopes = models.TextField(blank=True, null=True, choices=SCOPES)
 
     def __str__(self):
         return self.desc
@@ -29,8 +50,25 @@ class QuestionOption(models.Model):
 
 
 class Voting(models.Model):
+
+    THEMES_VOTATIONS = (
+        ('El', 'Electoral'),
+        ('Si', 'Self-interest'),
+        ('Kw', 'Knowledge'),
+        ('Ts', 'Testing'),
+        ('Su', 'Survey'),
+
+    )
+
+    TYPES_PREFERENCES = (
+        ('H', 'High'),
+        ('M', 'Mid'),
+        ('L', 'Low'),
+    )
     name = models.CharField(max_length=200)
-    desc = models.TextField(blank=True, null=True)
+    themeVotation = models.TextField(max_length=14, blank=False, null=False, choices=THEMES_VOTATIONS)
+    preference = models.TextField(max_length=14, blank=False, null=False, choices=TYPES_PREFERENCES)
+    desc = models.TextField( blank=True, null=True, )
     question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE)
 
     start_date = models.DateTimeField(blank=True, null=True)
@@ -119,5 +157,41 @@ class Voting(models.Model):
         self.postproc = postp
         self.save()
 
+    def tally_to_file(self, token=''):
+
+        id = self.id
+        name = self.name
+        desc = self.desc
+        start_date = self.start_date
+        end_date = self.end_date
+        question = self.question
+
+        postproc_list = self.postproc
+
+        doc_name = './voting/static_files/tally_report_' + str(id) + '.txt'
+        zip_name = './voting/static_files/tally_report_' + str(id) + '.zip'
+
+        document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
+            start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'
+
+        if(postproc_list!=None):
+            for postproc in postproc_list:
+                document = document + 'Option '+str(postproc['number'])+': '+str(
+                    postproc['option']) + ' - Votes: ' + str(postproc['votes']) + '\n'
+
+        print("LOG: Save Tally in File")
+
+        f = open(doc_name, 'w')
+        try:
+            f.write(document)
+        finally:
+            f.close()
+
+        doc_zip = zipfile.ZipFile(zip_name, 'w')
+        doc_zip.write(doc_name, compress_type=zipfile.ZIP_DEFLATED)
+
+        doc_zip.close()
+
     def __str__(self):
         return self.name
+

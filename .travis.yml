@@ -4,17 +4,8 @@ services:
   - postgresql
 addons:
   postgresql: "9.4"
+  chrome: stable
 before_script:
-  - wget -N 
-  - http://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip -P ~/
-  - unzip ~/chromedriver_linux64.zip -d ~/
-  - rm ~/chromedriver_linux64.zip
-  - sudo mv -f ~/chromedriver /usr/local/share/
-  - sudo chmod +x /usr/local/share/chromedriver
-  - sudo ln -s /usr/local/share/chromedriver/usr/local/bin/chromedriver
-  - sleep 3
-  - "export DISPLAY=99:0"
-  - "sh -e /etc/init.d/xvfb start"
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"

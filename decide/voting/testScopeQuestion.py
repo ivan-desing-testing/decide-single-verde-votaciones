@@ -36,9 +36,9 @@ class TestTestScopeQuestion(StaticLiveServerTestCase):
     self.base = BaseTestCase()
     self.base.setUp()
 
-    options = webdriver.ChromeOptions()
+    options = webdriver.FirefoxOptions()
     options.headless = True
-    self.driver = webdriver.Chrome(options=options)
+    driver = webdriver.Firefox(options=options)
 
     super().setUp()
 

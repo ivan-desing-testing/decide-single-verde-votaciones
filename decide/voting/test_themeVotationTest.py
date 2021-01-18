@@ -33,12 +33,12 @@ class TestThemeVotationTest(StaticLiveServerTestCase):
        #Load base test functionality for decide
           self.base = BaseTestCase()
           self.base.setUp()
-
-          options = webdriver.ChromeOptions()
-          options.headless = True
-          self.driver = webdriver.Chrome(options=options)
           self.usernameDecide = 'admin'
           self.passwordDecide = 'adminpass'
+
+          options = webdriver.FirefoxOptions()
+          options.headless = True
+          driver = webdriver.Firefox(options=options)
 
           super().setUp()
 

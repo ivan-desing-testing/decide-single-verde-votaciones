@@ -35,9 +35,9 @@ class TestPreferenceViews(StaticLiveServerTestCase):
     self.usernameDecide = 'admin'
     self.passwordDecide = 'adminpass'
 
-    options = webdriver.ChromeOptions()
+    options = webdriver.FirefoxOptions()
     options.headless = True
-    self.driver = webdriver.Chrome(options=options)
+    driver = webdriver.Firefox(options=options)
 
     super().setUp()
 

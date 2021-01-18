@@ -13,10 +13,13 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 class TestTallyExport():
 
     def setup_method(self, method):
-        self.driver = webdriver.Chrome()
         self.vars = {}
         self.usernameDecide = 'admin'
         self.passwordDecide = 'adminpass'
+
+        options = webdriver.FirefoxOptions()
+        options.headless = True
+        driver = webdriver.Firefox(options=options)
 
     def teardown_method(self, method):
         self.driver.quit()

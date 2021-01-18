@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 

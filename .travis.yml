@@ -32,4 +32,4 @@ deploy:
   provider: heroku
   app: decide-single-verde-votaciones
   strategy: git
-  api_key: bc5548c4-bd7e-40d3-866c-4a1473f1f439
+  api_key: $HEROKU_AUTH_TOKEN

@@ -5,6 +5,14 @@ services:
 addons:
   postgresql: "9.4"
 before_script:
+  - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+  - export CHROME_BIN=chromium-browser
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
+  - tar -xzf geckodriver-v0.27.0-linux64.tar.gz
+  - chmod +x geckodriver 
+  - sudo cp geckodriver /usr/bin/
+  - rm geckodriver-v0.27.0-linux64.tar.gz
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
@@ -16,12 +24,6 @@ install:
   - pip install selenium
   - pip install codacy-coverage
 script:
-  #- cd decide
-  #- cp travis_local_settings.py local_settings.py
-  #- ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  #- coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  #- coverage xml
-  #- python-codacy-coverage -r coverage.xml
   - cd decide
   - cp travis_local_settings.py local_settings.py
   - coverage run --branch --source=. ./manage.py test --keepdb

@@ -1,23 +1,13 @@
-sudo: required
 dist: xenial
 
 services:
   - postgresql
 addons:
   postgresql: "9.4"
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - npm i -g npm@^3
-  - sleep 3
 language: python
 python:
   - "3.6"
@@ -27,7 +17,15 @@ install:
   - pip install codacy-coverage
 script:
   - cd decide
-  - ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'email@email.com', 'adminpass')"
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
+  - tar -xzf geckodriver-v0.27.0-linux64.tar.gz
+  - chmod +x geckodriver 
+  - sudo cp geckodriver /usr/bin/
+  - rm geckodriver-v0.27.0-linux64.tar.gz
+  - cp travis_local_settings.py local_settings.py
+  - coverage run --branch --source=. ./manage.py test --keepdb
+deploy:
+  provider: heroku
+  app: decide-single-verde-votaciones
+  strategy: git
+  api_key: bc5548c4-bd7e-40d3-866c-4a1473f1f439

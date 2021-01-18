@@ -12,7 +12,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from base.tests import BaseTestCase
 
-class TestThemeVotationTest():
+class TestThemeVotationTest(StaticLiveServerTestCase):
      # def setup_method(self, method):
      #      self.driver = webdriver.Chrome()
      #      self.vars = {}
@@ -40,7 +40,7 @@ class TestThemeVotationTest():
           self.base.tearDown()
   
      def test_themeVotationTest(self):
-          self.driver.get("http://localhostSDFGSDFGSDFGSDFGDFSGSDFGn/")
+          self.driver.get("http://localhost:8000/admin/")
           self.driver.set_window_size(957, 727)
           self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
           self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)

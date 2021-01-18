@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-class TestPreferenceViews():
+class TestPreferenceViews(StaticLiveServerTestCase):
   # def setup_method(self, method):
   #   self.driver = webdriver.Chrome()
   #   self.vars = {}

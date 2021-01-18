@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-class AdminTestCase():
+class AdminTestCase(StaticLiveServerTestCase):
 
 
     def setUp(self):

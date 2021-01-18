@@ -11,31 +11,30 @@ from base.tests import BaseTestCase
 
 
 class TestThemeVotationTest(StaticLiveServerTestCase):
-     # def setup_method(self, method):
-     #      self.driver = webdriver.Chrome()
-     #      self.vars = {}
-          
-     # def teardown_method(self, method):
-     #      self.driver.quit()
-
      def setUp(self):
-       #Load base test functionality for decide
-          self.base = BaseTestCase()
-          self.base.setUp()
-          self.usernameDecide = 'admin'
-          self.passwordDecide = 'adminpass'
 
-          options = webdriver.FirefoxOptions()
-          options.headless = True
-          driver = webdriver.Firefox(options=options)
+        #Load base test functionality for decide
 
-          super().setUp()
+        self.base = BaseTestCase()
 
-     def tearDown(self):
-          super().tearDown()
-          self.driver.quit()
+        self.base.setUp()
 
-          self.base.tearDown()
+        options = webdriver.ChromeOptions()
+
+        options.headless = True
+
+        self.driver = webdriver.Chrome(options=options)
+
+        super().setUp()
+
+
+
+     def tearDown(self):           
+
+        super().tearDown()
+
+        self.driver.quit()
+
   
      def test_themeVotationTest(self):
           self.driver.get("http://localhost:8000/admin/")

@@ -15,8 +15,12 @@ from django.http import HttpResponseRedirect
 
 
 class Question(models.Model):
+    TYPEQUESTION = (
+        ('opn', 'Open'),
+        ('close', 'Close'),
+     )
     desc = models.TextField()
-
+    typeQuestion=models.TextField(blank=True null=True choices=TYPEQUESTION)
     SCOPES = (
         ('Lit', 'Literature'),
         ('Ent', 'Entertainment'),

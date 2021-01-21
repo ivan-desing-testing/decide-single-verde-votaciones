@@ -20,7 +20,7 @@ class Question(models.Model):
         ('close', 'Close'),
      )
     desc = models.TextField()
-    typeQuestion=models.TextField(blank=True null=True choices=TYPEQUESTION)
+    typeQuestion=models.TextField(blank=True, null=True, choices=TYPEQUESTION)
     SCOPES = (
         ('Lit', 'Literature'),
         ('Ent', 'Entertainment'),
@@ -39,10 +39,18 @@ class Question(models.Model):
         return self.desc
 
 
+
 class QuestionOption(models.Model):
+    ANSWER = (
+        ('Y','Yes'),
+        ('N','No')
+    )
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
     number = models.PositiveIntegerField(blank=True, null=True)
-    option = models.TextField()
+    if(question.typeQuestion=='close'):
+        option = models.TextField(blank=True, null=True, choices=ANSWER)
+    else:
+        option = models.TextField()
 
     def save(self):
         if not self.number:

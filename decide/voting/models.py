@@ -15,8 +15,12 @@ from django.http import HttpResponseRedirect
 
 
 class Question(models.Model):
+    TYPEQUESTION = (
+        ('opn', 'Open'),
+        ('close', 'Close'),
+     )
     desc = models.TextField()
-
+    typeQuestion=models.TextField(blank=True, null=True, choices=TYPEQUESTION)
     SCOPES = (
         ('Lit', 'Literature'),
         ('Ent', 'Entertainment'),
@@ -35,10 +39,18 @@ class Question(models.Model):
         return self.desc
 
 
+
 class QuestionOption(models.Model):
+    ANSWER = (
+        ('Y','Yes'),
+        ('N','No')
+    )
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
     number = models.PositiveIntegerField(blank=True, null=True)
-    option = models.TextField()
+    if(question.typeQuestion=='close'):
+        option = models.TextField(blank=True, null=True, choices=ANSWER)
+    else:
+        option = models.TextField()
 
     def save(self):
         if not self.number:
@@ -168,8 +180,8 @@ class Voting(models.Model):
 
         postproc_list = self.postproc
 
-        doc_name = './voting/static_files/tally_report_' + str(id) + '.txt'
-        zip_name = './voting/static_files/tally_report_' + str(id) + '.zip'
+        doc_name = './voting/staticfiles/tally_report_' + str(id) + '.txt'
+        zip_name = './voting/staticfiles/tally_report_' + str(id) + '.zip'
 
         document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
             start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'

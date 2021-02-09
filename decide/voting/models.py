@@ -15,12 +15,8 @@ from django.http import HttpResponseRedirect
 
 
 class Question(models.Model):
-    TYPEQUESTION = (
-        ('opn', 'Open'),
-        ('close', 'Close'),
-     )
     desc = models.TextField()
-    typeQuestion=models.TextField(blank=True, null=True, choices=TYPEQUESTION)
+
     SCOPES = (
         ('Lit', 'Literature'),
         ('Ent', 'Entertainment'),
@@ -39,18 +35,10 @@ class Question(models.Model):
         return self.desc
 
 
-
 class QuestionOption(models.Model):
-    ANSWER = (
-        ('Y','Yes'),
-        ('N','No')
-    )
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
     number = models.PositiveIntegerField(blank=True, null=True)
-    if(question.typeQuestion=='close'):
-        option = models.TextField(blank=True, null=True, choices=ANSWER)
-    else:
-        option = models.TextField()
+    option = models.TextField()
 
     def save(self):
         if not self.number:
@@ -206,4 +194,3 @@ class Voting(models.Model):
 
     def __str__(self):
         return self.name
-

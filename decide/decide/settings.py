@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-BASEURL = 'https://decide-single-verde-voting.herokuapp.com'
+BASEURL = 'https://decide-single-verde-votings.herokuapp.com'
 
 APIS = {
     'authentication': BASEURL,

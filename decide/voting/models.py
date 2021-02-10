@@ -168,8 +168,8 @@ class Voting(models.Model):
 
         postproc_list = self.postproc
 
-        doc_name = './voting/staticfiles/tally_report_' + str(id) + '.txt'
-        zip_name = './voting/staticfiles/tally_report_' + str(id) + '.zip'
+        doc_name = './voting/static_files/tally_report_' + str(id) + '.txt'
+        zip_name = './voting/static_files/tally_report_' + str(id) + '.zip'
 
         document = 'Id Voting: ' + str(id) + '\n' +'Name: ' + str(name) + '\n' + 'Description: ' + str(desc) + '\n' + 'Start Date: ' + str(
             start_date) + '\n' + 'End Date: ' + str(end_date) + '\n'+'Question: ' + str(question) + '\n' + 'Options: ' + '\n'

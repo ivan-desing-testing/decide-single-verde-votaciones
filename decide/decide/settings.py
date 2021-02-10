@@ -28,19 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-BASEURL = 'https://decide-single-verde-votings.herokuapp.com'
 
-APIS = {
-    'authentication': BASEURL,
-    'base': BASEURL,
-    'booth': BASEURL,
-    'census': BASEURL,
-    'mixnet': BASEURL,
-    'postproc': BASEURL,
-    'store': BASEURL,
-    'visualizer': BASEURL,
-    'voting': BASEURL,
-}
 
 # Application definition
 
@@ -178,7 +166,19 @@ KEYBITS = 256
 # Versioning
 ALLOWED_VERSIONS = ['v1', 'v2']
 DEFAULT_VERSION = 'v1'
+BASEURL = 'https://decide-single-verde-votings.herokuapp.com'
 
+APIS = {
+    'authentication': BASEURL,
+    'base': BASEURL,
+    'booth': BASEURL,
+    'census': BASEURL,
+    'mixnet': BASEURL,
+    'postproc': BASEURL,
+    'store': BASEURL,
+    'visualizer': BASEURL,
+    'voting': BASEURL,
+}
 try:
     from local_settings import *
 except ImportError:

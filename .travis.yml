@@ -32,10 +32,9 @@ deploy:
   provider: heroku
   app: decide-single-verde-votings
   strategy: git
+  api_key: $HEROKU_AUTH_TOKEN
   on:
     branch: master
-  api_key: 
-    secure: a7601c72-47fb-467c-9780-b627602df510
 
 
 

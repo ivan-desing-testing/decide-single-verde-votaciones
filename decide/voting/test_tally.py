@@ -9,17 +9,44 @@ from selenium.webdriver.common.keys import Keys
 
 from base.tests import BaseTestCase
 
-class TestTallyExport():
+class TestTallyExport(StaticLiveServerTestCase):
 
-    def setup_method(self, method):
-        self.vars = {}
-        self.usernameDecide = 'admin'
-        self.passwordDecide = 'adminpass'
+     def setup_method(self, method):
 
-        options = webdriver.FirefoxOptions()
-        options.headless = True
-        driver = webdriver.Firefox(options=options)
+         #Load base test functionality for decide
+         super().setUp()
+         self.base = BaseTestCase()
+         self.base.setUp()
+         self.vars = {}
+         self.usernameDecide = 'admin'
+         self.passwordDecide = 'admin123'
 
+#        options = webdriver.FirefoxOptions()
+#        options.headless = True
+#        driver.title='Test Tally Export'
+#        print('Title: %s' % driver.title)
+#        driver = webdriver.Firefox(options=options)
+
+         options = webdriver.ChromeOptions()
+         options.headless = True
+         self.driver = webdriver.Chrome(options=options)
+
+     def tearDown(self):
+         super().tearDown()
+         self.driver.quit()
+         self.base.tearDown()
+
+     def test_simpleCorrectLogin(self):
+         self.driver.get(f'{self.live_server_url}/admin/')
+         self.driver.find_element_by_id('id_username').send_keys("admin")
+         self.driver.find_element_by_id('id_password').send_keys("admin123",Keys.ENTER)
+
+         print(self.driver.current_url)
+         #In case of a correct loging, a element with id 'user-tools' is shown in the upper right part
+         self.assertTrue(len(self.driver.find_elements_by_id('user-tools'))==1)
+
+
+'''
     def teardown_method(self, method):
         self.driver.quit()
 
@@ -28,6 +55,9 @@ class TestTallyExport():
         self.driver.set_window_size(957, 727)
         self.driver.find_element(By.ID, "id_username").send_keys(self.usernameDecide)
         self.driver.find_element(By.ID, "id_password").send_keys(self.passwordDecide)
+
+        print(self.driver.current_url)
+
         self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
         self.driver.find_element(By.LINK_TEXT, "Questions").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
@@ -403,3 +433,4 @@ class TestTallyExport():
         self.driver.find_element(By.NAME, "action").click()
         self.driver.find_element(By.NAME, "index").click()
         self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(4)").click()
+'''

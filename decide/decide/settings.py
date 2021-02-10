@@ -168,17 +168,7 @@ ALLOWED_VERSIONS = ['v1', 'v2']
 DEFAULT_VERSION = 'v1'
 BASEURL = 'https://decide-single-verde-votings.herokuapp.com'
 
-APIS = {
-    'authentication': BASEURL,
-    'base': BASEURL,
-    'booth': BASEURL,
-    'census': BASEURL,
-    'mixnet': BASEURL,
-    'postproc': BASEURL,
-    'store': BASEURL,
-    'visualizer': BASEURL,
-    'voting': BASEURL,
-}
+APIS = {}
 try:
     from local_settings import *
 except ImportError:

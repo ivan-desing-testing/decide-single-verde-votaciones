@@ -21,13 +21,13 @@ install:
   - pip install codacy-coverage
 script:
   - cd decide
+  - cp travis_local_settings.py local_settings.py
+  - coverage run --branch --source=. ./manage.py test --keepdb
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
   - tar -xzf geckodriver-v0.27.0-linux64.tar.gz
   - chmod +x geckodriver 
   - sudo cp geckodriver /usr/bin/
   - rm geckodriver-v0.27.0-linux64.tar.gz
-  - cp travis_local_settings.py local_settings.py
-  - coverage run --branch --source=. ./manage.py test --keepdb
 deploy:
   provider: heroku
   app: decide-single-verde-votings

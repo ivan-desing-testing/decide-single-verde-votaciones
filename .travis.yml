@@ -8,7 +8,7 @@ addons:
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
-  - psql -U postgres -c "ALTER USER decide CREATEDB"
+  - psql -U postgres -c "ALTER USER decide Superuser"
   - psql test_decide -c "GRANT ALL ON ALL TABLES IN SCHEMA public to decide;"
   - psql test_decide -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to decide;"
   - psql test_decide -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to decide;"

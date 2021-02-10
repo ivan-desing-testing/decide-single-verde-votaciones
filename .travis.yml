@@ -30,7 +30,7 @@ script:
   - coverage run --branch --source=. ./manage.py test --keepdb
 deploy:
   provider: heroku
-  app: decide-single-verde-votaciones
+  app: decide-single-verde-votings
   strategy: git
   on:
     branch: master
